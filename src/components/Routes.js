@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route } from "react-router-dom";
+import { Route , Redirect} from "react-router-dom";
 import { Divider } from '@material-ui/core';
 
 import TopNav from './topnav/TopNav';
@@ -19,6 +19,9 @@ function Routes() {
         <br /> <Divider /> <br />
       </div>
       <div className="main-content">
+        <Route exact path="/">
+          <Redirect to="/home" />
+        </Route>
         <Route path="/home" component={Main} />
         <Route path="/covid-table" component={CovidTable} />
       </div>
