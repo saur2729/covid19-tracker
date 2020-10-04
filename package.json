@@ -1,7 +1,7 @@
 {
   "name": "covid19-tracker",
   "version": "0.1.0",
-  "homepage": "http://saur2729.github.io/covid19-tracker",
+  "homepage": "https://saur2729.github.io/covid19-tracker/home",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
