@@ -19,6 +19,7 @@ function Routes() {
         <br /> <Divider /> <br />
       </div>
       <div className="main-content">
+        <Route path="/" component={Main} />
         <Route path="/home" component={Main} />
         <Route path="/covid-table" component={CovidTable} />
       </div>
