@@ -39,13 +39,16 @@ export default function CovidTable() {
   // const [tableRowData, settableRowData] = useState([]);
 
   const rows = []
-  function createData(country, cases, recovered, deaths, active, critical, todayCases, todayRecovered, todayDeaths, casesPerOneMillion, deathsPerOneMillion, updated) {
-    return {country, cases, recovered, deaths, active, critical, todayCases, todayRecovered, todayDeaths, casesPerOneMillion, deathsPerOneMillion, updated};
+  function createData(country, flag, cases, recovered, deaths, active, critical, todayCases, todayRecovered, todayDeaths, casesPerOneMillion, deathsPerOneMillion, updated) {
+    var cntry = '<img src="'+flag+'" width=10 height=10/>'
+    cntry = cntry.concat(country);
+    console.log(cntry)
+    return {cntry, cases, recovered, deaths, active, critical, todayCases, todayRecovered, todayDeaths, casesPerOneMillion, deathsPerOneMillion, updated};
   }
-
+//value.countryInfo.flag
   function addRowData() {
     for (const [index, value] of apiData.entries()) {
-      rows.push(createData(value.country, value.cases, value.recovered, value.deaths, value.active, value.critical, value.todayCases, value.todayRecovered, value.todayDeaths, value.casesPerOneMillion, value.deathsPerOneMillion, value.updated))
+      rows.push(createData(value.country, value.countryInfo.flag, value.cases, value.recovered, value.deaths, value.active, value.critical, value.todayCases, value.todayRecovered, value.todayDeaths, value.casesPerOneMillion, value.deathsPerOneMillion, value.updated))
       // console.log("Pushed data for #"+index+" "+value.country)
     }
   }

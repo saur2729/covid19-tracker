@@ -4,7 +4,7 @@ import { Divider } from '@material-ui/core';
 
 import TopNav from './topnav/TopNav';
 import Main from './dashboard/Main';
-import CovidTable from './charts/CovidTable';
+import CovidTable from './stats/CovidTable';
 
 import './navbar.css';
 
@@ -16,7 +16,7 @@ function Routes() {
        <TopNav />
       </div>
       <div className="divider">
-        <br /> <Divider /> <br />
+        <br /> <Divider />
       </div>
       <div className="main-content">
         <Route exact path="/">
