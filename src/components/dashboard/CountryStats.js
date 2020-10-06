@@ -1,31 +1,14 @@
-import React, {useState, useEffect} from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import React, {useEffect, useState} from 'react'
+import { useParams } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-
-import Cards from '../util/Cards';
 import Charts from '../stats/Charts';
-import { Divider } from '@material-ui/core';
-import {Pie} from 'react-chartjs-2';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
 
-export default function Main() {
-  const classes = useStyles();
-  const [allData, setallData] = useState([]);
+export default function CountryStats({match, location}) {
+  let params = useParams()
   const [chartData, setchartData] = useState([]);
+  const [chartError, setchartError] = useState(false);
 
-  useEffect(() => {
-    async function fetchAllRecords() {
-      const response = await (await fetch("https://disease.sh/v3/covid-19/all?allowNull=true")).json();
-      setallData(response)
-    }
-    fetchAllRecords();
-  }, [])
 
   // for fetching the chart data
   const chartDetails = {}
@@ -38,11 +21,13 @@ export default function Main() {
 
   useEffect(() => {
     async function fetchAllRecords() {
-      const response = await (await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=all")).json();
-      setchartData(response)
+      const response = await (await fetch("https://disease.sh/v3/covid-19/historical/"+ params.countryID +"?lastdays=all")).json();
+      console.log(response)
+      response.message === "Country not found or doesn't have any historical data" ? setchartError(true) :  setchartError(false)
+      setchartData(response["timeline"])
     }
     fetchAllRecords();
-  }, [])
+  }, [params.countryID])
 
   for (var reportType in chartData) {
     for (const records in chartData[reportType]) {
@@ -88,66 +73,19 @@ export default function Main() {
      'data' : recoveredArr
    })
 
-
    // fetching the chart data ends here
 
   return (
-    <div className={classes.root}>
-      <h1>Covid19 Stats</h1>
+    <div>
+      <h1>Country stats for : {params.countryID}</h1>
       <Grid container spacing={2}>
         <Grid item xs>
-          <Cards type="Total Cases" case_count={casesArr.slice(-1)[0]} tcolor="#C4C4CA" />
-        </Grid>
-        <Grid item xs>
-          <Cards type="Total Active Cases" case_count={allData.active} tcolor="#F88930" />
-        </Grid>
-        <Grid item xs>
-          <Cards type="Deaths" case_count={deathsArr.slice(-1)[0]} tcolor="#F64444"/>
-        </Grid>
-        <Grid item xs>
-          <Cards type="Total Recovered" case_count={recoveredArr.slice(-1)[0]} tcolor="#5DE240" />
+          {
+            chartError ?
+              <h3>Couldn't find any historical records for the country code : {params.countryID}</h3> : <Charts data={chartDetails} />
+          }
         </Grid>
       </Grid>
-      <br /> <Divider />
-      <h2>Distribution of number of cases over time</h2>
-
-      <Grid container spacing={2}>
-        <Grid item xs>
-          <Charts data={chartDetails} />
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs>
-        <Paper><Pie data={pieData} /></Paper>
-        </Grid>
-        <Grid item xs>
-          <Paper><Pie data={pieData} /></Paper>
-        </Grid>
-      </Grid>
-      <br />
-
     </div>
-
   )
 }
-
-const pieData = {
-	labels: [
-		'Red',
-		'Blue',
-		'Yellow'
-	],
-	datasets: [{
-		data: [300, 200, 100],
-		backgroundColor: [
-		'#FF6384',
-		'#36A2EB',
-		'#FFCE56'
-		],
-		hoverBackgroundColor: [
-		'#FF6384',
-		'#36A2EB',
-		'#FFCE56'
-		]
-	}]
-};

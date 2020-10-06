@@ -8,6 +8,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Typography } from '@material-ui/core';
+import { NavLink } from "react-router-dom";
+import Avatar from '@material-ui/core/Avatar';
 
 const columns = [
   { id: 'country', label: 'Country'},
@@ -23,15 +25,18 @@ const columns = [
   { id: 'critical', label: 'Critical', format: (value) => value.toLocaleString('en-US')}
 ];
 
-
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
   container: {
     maxHeight: 700,
   },
-});
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(2),
+  },
+}));
 
 export default function CovidTable() {
   const classes = useStyles();
@@ -39,16 +44,14 @@ export default function CovidTable() {
   // const [tableRowData, settableRowData] = useState([]);
 
   const rows = []
-  function createData(country, flag, cases, recovered, deaths, active, critical, todayCases, todayRecovered, todayDeaths, casesPerOneMillion, deathsPerOneMillion, updated) {
-    var cntry = '<img src="'+flag+'" width=10 height=10/>'
-    cntry = cntry.concat(country);
-    console.log(cntry)
-    return {cntry, cases, recovered, deaths, active, critical, todayCases, todayRecovered, todayDeaths, casesPerOneMillion, deathsPerOneMillion, updated};
+  function createData(cntry, flag, iso3, cases, recovered, deaths, active, critical, todayCases, todayRecovered, todayDeaths, casesPerOneMillion, deathsPerOneMillion, updated) {
+    var country = [cntry, flag, iso3]
+    return {country, cases, recovered, deaths, active, critical, todayCases, todayRecovered, todayDeaths, casesPerOneMillion, deathsPerOneMillion, updated};
   }
 //value.countryInfo.flag
   function addRowData() {
     for (const [index, value] of apiData.entries()) {
-      rows.push(createData(value.country, value.countryInfo.flag, value.cases, value.recovered, value.deaths, value.active, value.critical, value.todayCases, value.todayRecovered, value.todayDeaths, value.casesPerOneMillion, value.deathsPerOneMillion, value.updated))
+      rows.push(createData(value.country, value.countryInfo.flag, value.countryInfo.iso3, value.cases, value.recovered, value.deaths, value.active, value.critical, value.todayCases, value.todayRecovered, value.todayDeaths, value.casesPerOneMillion, value.deathsPerOneMillion, value.updated))
       // console.log("Pushed data for #"+index+" "+value.country)
     }
   }
@@ -90,10 +93,25 @@ export default function CovidTable() {
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.country}>
                   {columns.map((column) => {
                     const value = row[column.id];
+                    function genTableCell(){
+                      if (column.id === 'country'){
+                        return (
+                          <TableCell key={column.id} style={{display: "inline-flex"}}>
+                            <Avatar variant="square" src={value[1]} className={classes.small} />
+                            &nbsp; &nbsp; &nbsp;
+                            <NavLink to={'/country/'+value[2]} activeStyle={{fontWeight: "bold", color: "red" }}> {value[0]}</NavLink>
+                          </TableCell>
+                        )
+                      } else {
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.format && typeof value === 'number' ? column.format(value) : value}
+                          </TableCell>
+                        )
+                      }
+                    }
                     return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
+                      genTableCell()
                     );
                   })}
                 </TableRow>

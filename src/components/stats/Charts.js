@@ -18,6 +18,16 @@ export default function Charts(props) {
     labels: props.data.xlabel,
     datasets: []
   }
+  const chartOptions =  {
+    tooltips: {
+       mode: 'index',
+       intersect: false
+    },
+    hover: {
+       mode: 'index',
+       intersect: false
+    }
+  };
   for (const dataset in props.data.datasets){
     const label = props.data.datasets[dataset]['label']
     const lcolor = props.data.datasets[dataset]['bgcolor']
@@ -49,7 +59,7 @@ export default function Charts(props) {
       <Grid container spacing={2}>
         <Grid item xs>
           <Paper elevation={3}>
-            <Line data={data} />
+            <Line data={data} options={chartOptions} />
           </Paper>
         </Grid>
       </Grid>

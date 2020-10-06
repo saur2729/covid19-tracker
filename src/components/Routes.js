@@ -5,6 +5,7 @@ import { Divider } from '@material-ui/core';
 import TopNav from './topnav/TopNav';
 import Main from './dashboard/Main';
 import CovidTable from './stats/CovidTable';
+import CountryStats from './dashboard/CountryStats';
 
 import './navbar.css';
 
@@ -24,6 +25,7 @@ function Routes() {
         </Route>
         <Route path="/home" component={Main} />
         <Route path="/covid-table" component={CovidTable} />
+        <Route path="/country/:countryID" component={CountryStats} />
       </div>
     </div>
   )
