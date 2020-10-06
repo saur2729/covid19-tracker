@@ -13,11 +13,11 @@ export default function TopNav() {
           </ListItem>
 
           <ListItem button key='CovidTable' component={NavLink} to='/covid-table'>
-            <ListItemText primary='Country Stats' />
+            <ListItemText primary='Worldwide Stats' />
           </ListItem>
 
-          <ListItem button key='contact' component={NavLink} to='/contact'>
-            <ListItemText primary='Contact' />
+          <ListItem button key='country' component={NavLink} to='/country/USA'>
+            <ListItemText primary='Country Stats' />
           </ListItem>
         </List>
     </div>

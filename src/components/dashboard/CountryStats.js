@@ -8,9 +8,11 @@ export default function CountryStats({match, location}) {
   let params = useParams()
   const [chartData, setchartData] = useState([]);
   const [chartError, setchartError] = useState(false);
+  // const [countryID, setcountryID] = useState('')
 
-
+  // setcountryID(params.countryID)
   // for fetching the chart data
+  const countryID = params.countryID
   const chartDetails = {}
   const currMonth = new Date().getMonth();
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].slice(0, currMonth+1)
@@ -21,13 +23,12 @@ export default function CountryStats({match, location}) {
 
   useEffect(() => {
     async function fetchAllRecords() {
-      const response = await (await fetch("https://disease.sh/v3/covid-19/historical/"+ params.countryID +"?lastdays=all")).json();
-      console.log(response)
+      const response = await (await fetch("https://disease.sh/v3/covid-19/historical/"+ countryID +"?lastdays=all")).json();
       response.message === "Country not found or doesn't have any historical data" ? setchartError(true) :  setchartError(false)
       setchartData(response["timeline"])
     }
     fetchAllRecords();
-  }, [params.countryID])
+  }, [countryID])
 
   for (var reportType in chartData) {
     for (const records in chartData[reportType]) {
@@ -77,7 +78,7 @@ export default function CountryStats({match, location}) {
 
   return (
     <div>
-      <h1>Country stats for : {params.countryID}</h1>
+      <h1>Stats for : {params.countryID}</h1>
       <Grid container spacing={2}>
         <Grid item xs>
           {

@@ -2,11 +2,11 @@ import React, {useState, useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
+import {Pie} from 'react-chartjs-2';
 
 import Cards from '../util/Cards';
 import Charts from '../stats/Charts';
-import { Divider } from '@material-ui/core';
-import {Pie} from 'react-chartjs-2';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,25 +87,25 @@ export default function Main() {
      'bgcolor' : '#5DE240',
      'data' : recoveredArr
    })
-
-
    // fetching the chart data ends here
+
+
 
   return (
     <div className={classes.root}>
       <h1>Covid19 Stats</h1>
       <Grid container spacing={2}>
         <Grid item xs>
-          <Cards type="Total Cases" case_count={casesArr.slice(-1)[0]} tcolor="#C4C4CA" />
+          <Cards type="Cases Reported Today" case_count={allData.todayCases} sub_type="Total Cases" sub_case_count={casesArr.slice(-1)[0]} tcolor="#C4C4CA" />
         </Grid>
         <Grid item xs>
-          <Cards type="Total Active Cases" case_count={allData.active} tcolor="#F88930" />
+          <Cards type="Deaths Today" case_count={allData.todayDeaths} tcolor="#F64444" sub_type="Total Deaths" sub_case_count={deathsArr.slice(-1)[0]} />
         </Grid>
         <Grid item xs>
-          <Cards type="Deaths" case_count={deathsArr.slice(-1)[0]} tcolor="#F64444"/>
+          <Cards type="Recovered Today" case_count={allData.todayRecovered} tcolor="#5DE240" sub_type="Total Recovered" sub_case_count={recoveredArr.slice(-1)[0]} />
         </Grid>
         <Grid item xs>
-          <Cards type="Total Recovered" case_count={recoveredArr.slice(-1)[0]} tcolor="#5DE240" />
+          <Cards type="Active Cases" case_count={allData.active} tcolor="#F88930" sub_type="Total Active Cases" sub_case_count={allData.active} />
         </Grid>
       </Grid>
       <br /> <Divider />
@@ -116,14 +116,15 @@ export default function Main() {
           <Charts data={chartDetails} />
         </Grid>
       </Grid>
-      <Grid container spacing={2}>
+      {/* Pie charts for comparing the stats of top countries with no of cases */}
+      {/* <Grid container spacing={2}>
         <Grid item xs>
         <Paper><Pie data={pieData} /></Paper>
         </Grid>
         <Grid item xs>
           <Paper><Pie data={pieData} /></Paper>
         </Grid>
-      </Grid>
+      </Grid> */}
       <br />
 
     </div>

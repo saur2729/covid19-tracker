@@ -13,6 +13,11 @@ const useStyles = makeStyles({
   title: {
     fontSize: 14,
   },
+  cardcontent: {
+    "&:last-child": {
+      paddingBottom: 5
+    }
+  }
 });
 
 
@@ -21,14 +26,16 @@ export default function Cards(props) {
 
   return (
     <Card className={classes.root}>
-      <CardContent>
+      <CardContent className={classes.cardcontent}>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           {props.type}
         </Typography>
-        <Divider />
-        <br />
         <Typography variant="h3" component="h3" align="right" style={{color: props.tcolor}}>
-        {parseFloat(props.case_count).toLocaleString('en-US')}
+          {parseFloat(props.case_count).toLocaleString('en-US')}
+        </Typography>
+        <br/><Divider /> <br />
+        <Typography className={classes.title} color="textSecondary" gutterBottom>
+          {props.sub_type} - {parseFloat(props.sub_case_count).toLocaleString('en-US')}
         </Typography>
       </CardContent>
     </Card>
